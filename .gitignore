@@ -1,3 +1,6 @@
 .venv/pyvenv.cfg
 .venv/*
 data/*
+session7/traffic-signs-data/test.p
+session7/traffic-signs-data/train.p
+session7/traffic-signs-data/valid.p
