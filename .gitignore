@@ -4,3 +4,28 @@ data/*
 session7/traffic-signs-data/test.p
 session7/traffic-signs-data/train.p
 session7/traffic-signs-data/valid.p
+final-project/archive/*
+final-project/archive.zip
+final-project/data_prepared/*
+
+# Jupyter / Python artifacts
+**/__pycache__/
+*.pyc
+
+# Final project artifacts (large / generated)
+final-project/runs/
+final-project/outputs/
+final-project/models/*.pth
+final-project/**/*.pt
+final-project/**/*.pth
+
+# Session 5 camera outputs (generated videos)
+session5/camera/*.avi
+session5/camera/*.mp4
+session5/camera/video_output/
+
+# Other archives (often large/generated)
+ppe/*.zip
+
+# Colab / model weights (large binaries)
+Colab_Labs/**/*.pt
