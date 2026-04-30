@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,backgroundcolor=\color{gray!5}}
+\title{E1402 Final Assignment - Full Detailed Answer}
+\date{}
+\begin{document}
+\maketitle
+
+\section*{PART I - Multiple Choice \& Theory (Full + Answers)}
+\begin{enumerate}[leftmargin=*]
+\item OpenCV default color format: \textbf{b) BGR}.\\
+Giai thich: OpenCV doc anh theo thu tu Blue-Green-Red.
+\item If \texttt{cv2.imread()} cannot find file: \textbf{c) None}.
+\item BGR to grayscale constant: \textbf{c) \texttt{cv2.COLOR\_BGR2GRAY}}.
+\item Filter for Gaussian noise: \textbf{d) Gaussian Blur}.
+\item MaxPooling(2x2): \textbf{b)} reduce spatial resolution by keeping maxima.
+\item Why \texttt{waitKey()} after \texttt{imshow()}: \textbf{b)} render window and wait for key press.
+\end{enumerate}
+
+\subsection*{7) Contour Detection}
+\begin{itemize}[leftmargin=*]
+\item \texttt{cv2.findContours()}: detect contours in binary image.
+\item \texttt{cv2.drawContours()}: draw detected contours on image.
+\end{itemize}
+
+\subsection*{8) NumPy image shape}
+\begin{lstlisting}[language=Python]
+height, width, channels = img.shape
+\end{lstlisting}
+
+\section*{PART II - Detailed Complete Answer}
+\subsection*{1) Complete code}
+\begin{lstlisting}[language=Python]
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+model = models.Sequential([
+    layers.Conv2D(16, (3, 3), activation='relu', input_shape=(32, 32, 3)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(3, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+model.summary()
+\end{lstlisting}
+
+\subsection*{2) Explanation (line-by-line summary)}
+\begin{itemize}[leftmargin=*]
+\item Input is RGB 32x32: \texttt{input\_shape=(32,32,3)}.
+\item \texttt{Conv2D(16,(3,3),relu)} extracts image features.
+\item \texttt{MaxPooling2D((2,2))} downsamples feature maps.
+\item \texttt{Flatten()} converts feature maps to a 1D vector.
+\item \texttt{Dense(3, softmax)} outputs class probabilities for 3 classes.
+\item Compile with Adam + sparse categorical crossentropy as required.
+\end{itemize}
+
+\subsection*{3) Common mistakes to avoid}
+\begin{enumerate}[leftmargin=*]
+\item Wrong input shape (must include channel dimension 3).
+\item Wrong output size (must be 3 neurons).
+\item Wrong output activation (use softmax for multi-class).
+\item Wrong loss function (use sparse\_categorical\_crossentropy).
+\end{enumerate}
+
+\section*{PART III - Debugging \& Correction}
+\subsection*{Four errors identified}
+\begin{enumerate}[leftmargin=*]
+\item \texttt{cv2.waitkey(0)} should be \texttt{cv2.waitKey(0)}.
+\item \texttt{cv2.release()} is invalid in this image script and should be removed.
+\item Missing check after \texttt{cv2.imread("photo.png")}; it may return \texttt{None}.
+\item Program should not continue processing if image loading fails.
+\end{enumerate}
+
+\subsection*{Corrected code}
+\begin{lstlisting}[language=Python]
+import cv2
+
+image = cv2.imread("photo.png")
+
+if image is None:
+    print("Error: Image not found.")
+else:
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+
+    cv2.imshow("Original", image)
+    cv2.imshow("Threshold", thresh)
+    cv2.waitKey(0)
+
+    cv2.imwrite("result.png", thresh)
+    cv2.destroyAllWindows()
+\end{lstlisting}
+
+\end{document}
